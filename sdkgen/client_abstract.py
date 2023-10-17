@@ -1,4 +1,4 @@
-from sdkgen.authenticator import AuthenticatorFactory
+from sdkgen.authenticator_factory import AuthenticatorFactory
 from sdkgen.credentials import CredentialsInterface
 from sdkgen.http_client_factory import HttpClientFactory
 from sdkgen.parser import Parser
@@ -20,3 +20,5 @@ class TagAbstract:
     def __init__(self, http_client: Session, parser: Parser):
         self.http_client = http_client
         self.parser = parser
+
+    pass

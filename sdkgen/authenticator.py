@@ -1,29 +1,12 @@
 import base64
+
 from requests.auth import AuthBase
-from sdkgen.credentials import CredentialsInterface, HttpBasic, HttpBearer, ApiKey, OAuth2, Anonymous
-from sdkgen.exceptions import InvalidCredentialsException
+
+from sdkgen.credentials import HttpBasic, HttpBearer, ApiKey, OAuth2, Anonymous
 
 
 class AuthenticatorInterface(AuthBase):
     pass
-
-
-class AuthenticatorFactory:
-    @staticmethod
-    def factory(credentials: CredentialsInterface):
-        if isinstance(credentials, HttpBasic):
-            return HttpBasicAuthenticator(credentials)
-        elif isinstance(credentials, HttpBearer):
-            return HttpBearerAuthenticator(credentials)
-        elif isinstance(credentials, ApiKey):
-            return ApiKeyAuthenticator(credentials)
-        elif isinstance(credentials, OAuth2):
-            return OAuth2Authenticator(credentials)
-        elif isinstance(credentials, Anonymous):
-            return AnonymousAuthenticator(credentials)
-        else:
-            raise InvalidCredentialsException("Could not find authenticator for credentials")
-        pass
 
 
 class AnonymousAuthenticator(AuthenticatorInterface):
@@ -34,21 +17,13 @@ class AnonymousAuthenticator(AuthenticatorInterface):
         pass
 
 
-class ApiKeyAuthenticator(AuthenticatorInterface):
-    def __init__(self, credentials: ApiKey):
-        self.credentials = credentials
-
-    def __call__(self, request):
-        request.headers[self.credentials.name] = self.credentials.token
-        pass
-
-
 class HttpBasicAuthenticator(AuthenticatorInterface):
     def __init__(self, credentials: HttpBasic):
         self.credentials = credentials
 
     def __call__(self, request):
-        request.headers["Authorization"] = "Basic " + str(base64.b64encode(self.credentials.username + ":" + self.credentials.password))
+        request.headers["Authorization"] = "Basic " + str(
+            base64.b64encode(self.credentials.username + ":" + self.credentials.password))
         pass
 
 
@@ -58,6 +33,15 @@ class HttpBearerAuthenticator(AuthenticatorInterface):
 
     def __call__(self, request):
         request.headers["Authorization"] = "Bearer " + self.credentials.token
+        pass
+
+
+class ApiKeyAuthenticator(AuthenticatorInterface):
+    def __init__(self, credentials: ApiKey):
+        self.credentials = credentials
+
+    def __call__(self, request):
+        request.headers[self.credentials.name] = self.credentials.token
         pass
 
 

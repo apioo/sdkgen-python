@@ -1,6 +1,6 @@
 import requests
 from requests import Session
-from sdkgen.client import ClientAbstract
+from sdkgen.client_abstract import ClientAbstract
 from sdkgen.authenticator import AuthenticatorInterface
 
 
