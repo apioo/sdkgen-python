@@ -7,6 +7,8 @@ from sdkgen.client_abstract import ClientAbstract
 from sdkgen.credentials import CredentialsInterface, HttpBearer
 from sdkgen.parser import Parser
 
+from product_tag import ProductTag
+
 class Client(ClientAbstract):
     def __init__(self, base_url: str, credentials: CredentialsInterface):
         super().__init__(base_url, credentials)
@@ -16,12 +18,12 @@ class Client(ClientAbstract):
         return ProductTag(
             self.http_client,
             self.parser
-        );
+        )
     pass
 
 
 
     @staticmethod
-    def build(token: str) -> Client:
+    def build(token: str):
         return Client("http://127.0.0.1:8081", HttpBearer(token))
     pass

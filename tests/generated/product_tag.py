@@ -8,6 +8,9 @@ from sdkgen.client_abstract import TagAbstract
 from sdkgen.exceptions import UnknownStatusCodeException, ClientException
 from sdkgen.parser import Parser
 
+from test_request import TestRequest
+from test_response import TestResponse
+
 class ProductTag(TagAbstract):
     def __init__(self, http_client: Session, parser: Parser):
         super().__init__(http_client, parser)
@@ -29,8 +32,8 @@ class ProductTag(TagAbstract):
             url = self.parser.url("/anything", pathParams)
 
             headers = {}
-            
-            response = self.http_client.get(url, headers=headers, params=queryParams, )
+
+            response = self.http_client.get(url, headers=headers, params=queryParams)
 
             if response.status_code >= 200 and response.status_code < 300:
                 return TestResponse.from_json(response.content)
@@ -53,9 +56,9 @@ class ProductTag(TagAbstract):
             url = self.parser.url("/anything", pathParams)
 
             headers = {}
-                        headers["Content-Type"] = "application/json"
-            
-            response = self.http_client.post(url, headers=headers, params=queryParams, data=payload)
+            headers["Content-Type"] = "application/json"
+
+            response = self.http_client.post(url, headers=headers, params=queryParams, data=payload.to_json())
 
             if response.status_code >= 200 and response.status_code < 300:
                 return TestResponse.from_json(response.content)
@@ -79,9 +82,9 @@ class ProductTag(TagAbstract):
             url = self.parser.url("/anything/:id", pathParams)
 
             headers = {}
-                        headers["Content-Type"] = "application/json"
-            
-            response = self.http_client.put(url, headers=headers, params=queryParams, data=payload)
+            headers["Content-Type"] = "application/json"
+
+            response = self.http_client.put(url, headers=headers, params=queryParams, data=payload.to_json())
 
             if response.status_code >= 200 and response.status_code < 300:
                 return TestResponse.from_json(response.content)
@@ -105,9 +108,9 @@ class ProductTag(TagAbstract):
             url = self.parser.url("/anything/:id", pathParams)
 
             headers = {}
-                        headers["Content-Type"] = "application/json"
-            
-            response = self.http_client.patch(url, headers=headers, params=queryParams, data=payload)
+            headers["Content-Type"] = "application/json"
+
+            response = self.http_client.patch(url, headers=headers, params=queryParams, data=payload.to_json())
 
             if response.status_code >= 200 and response.status_code < 300:
                 return TestResponse.from_json(response.content)
@@ -131,8 +134,8 @@ class ProductTag(TagAbstract):
             url = self.parser.url("/anything/:id", pathParams)
 
             headers = {}
-            
-            response = self.http_client.delete(url, headers=headers, params=queryParams, )
+
+            response = self.http_client.delete(url, headers=headers, params=queryParams)
 
             if response.status_code >= 200 and response.status_code < 300:
                 return TestResponse.from_json(response.content)
@@ -144,4 +147,3 @@ class ProductTag(TagAbstract):
     pass
 
 
-}
