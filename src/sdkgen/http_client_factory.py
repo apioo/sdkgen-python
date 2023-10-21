@@ -1,7 +1,7 @@
 import requests
 from requests import Session
-from sdkgen.client_abstract import ClientAbstract
-from sdkgen.authenticator import AuthenticatorInterface
+from .client_abstract import ClientAbstract
+from .authenticator import AuthenticatorInterface
 
 
 class HttpClientFactory:

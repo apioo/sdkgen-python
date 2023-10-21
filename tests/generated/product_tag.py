@@ -4,15 +4,13 @@ https://sdkgen.app
 """
 
 from requests import Session
-from sdkgen.client_abstract import TagAbstract
-from sdkgen.exceptions import UnknownStatusCodeException, ClientException
-from sdkgen.parser import Parser
+from src import sdkgen
 
 from test_request import TestRequest
 from test_response import TestResponse
 
-class ProductTag(TagAbstract):
-    def __init__(self, http_client: Session, parser: Parser):
+class ProductTag(sdkgen.TagAbstract):
+    def __init__(self, http_client: Session, parser: sdkgen.Parser):
         super().__init__(http_client, parser)
     pass
 
@@ -39,9 +37,9 @@ class ProductTag(TagAbstract):
                 return TestResponse.from_json(response.content)
 
 
-            raise UnknownStatusCodeException("The server returned an unknown status code")
+            raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
         except Exception as e:
-            raise ClientException("An unknown error occurred: " + str(e))
+            raise sdkgen.ClientException("An unknown error occurred: " + str(e))
     pass
 
     """
@@ -64,9 +62,9 @@ class ProductTag(TagAbstract):
                 return TestResponse.from_json(response.content)
 
 
-            raise UnknownStatusCodeException("The server returned an unknown status code")
+            raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
         except Exception as e:
-            raise ClientException("An unknown error occurred: " + str(e))
+            raise sdkgen.ClientException("An unknown error occurred: " + str(e))
     pass
 
     """
@@ -90,9 +88,9 @@ class ProductTag(TagAbstract):
                 return TestResponse.from_json(response.content)
 
 
-            raise UnknownStatusCodeException("The server returned an unknown status code")
+            raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
         except Exception as e:
-            raise ClientException("An unknown error occurred: " + str(e))
+            raise sdkgen.ClientException("An unknown error occurred: " + str(e))
     pass
 
     """
@@ -116,9 +114,9 @@ class ProductTag(TagAbstract):
                 return TestResponse.from_json(response.content)
 
 
-            raise UnknownStatusCodeException("The server returned an unknown status code")
+            raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
         except Exception as e:
-            raise ClientException("An unknown error occurred: " + str(e))
+            raise sdkgen.ClientException("An unknown error occurred: " + str(e))
     pass
 
     """
@@ -141,9 +139,9 @@ class ProductTag(TagAbstract):
                 return TestResponse.from_json(response.content)
 
 
-            raise UnknownStatusCodeException("The server returned an unknown status code")
+            raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
         except Exception as e:
-            raise ClientException("An unknown error occurred: " + str(e))
+            raise sdkgen.ClientException("An unknown error occurred: " + str(e))
     pass
 
 

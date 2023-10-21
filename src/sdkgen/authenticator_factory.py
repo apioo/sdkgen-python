@@ -1,7 +1,8 @@
-from sdkgen.authenticator import HttpBasicAuthenticator, HttpBearerAuthenticator, ApiKeyAuthenticator, \
+from .authenticator import HttpBasicAuthenticator, HttpBearerAuthenticator, ApiKeyAuthenticator, \
     OAuth2Authenticator, AnonymousAuthenticator
-from sdkgen.credentials import CredentialsInterface, HttpBasic, HttpBearer, ApiKey, OAuth2, Anonymous
-from sdkgen.exceptions import InvalidCredentialsException
+from .credentials import CredentialsInterface, HttpBasic, HttpBearer, ApiKey, OAuth2, Anonymous
+from .exceptions import InvalidCredentialsException
+
 
 class AuthenticatorFactory:
     @staticmethod

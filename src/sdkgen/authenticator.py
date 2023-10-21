@@ -2,7 +2,7 @@ import base64
 
 from requests.auth import AuthBase
 
-from sdkgen.credentials import HttpBasic, HttpBearer, ApiKey, OAuth2, Anonymous
+from .credentials import HttpBasic, HttpBearer, ApiKey, OAuth2, Anonymous
 
 
 class AuthenticatorInterface(AuthBase):

@@ -1,4 +1,4 @@
-from sdkgen.token_store import TokenStoreInterface
+from .token_store import TokenStoreInterface
 
 
 class CredentialsInterface:

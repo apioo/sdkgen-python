@@ -1,7 +1,7 @@
-from sdkgen.authenticator_factory import AuthenticatorFactory
-from sdkgen.credentials import CredentialsInterface
-from sdkgen.http_client_factory import HttpClientFactory
-from sdkgen.parser import Parser
+from .authenticator_factory import AuthenticatorFactory
+from .credentials import CredentialsInterface
+from .http_client_factory import HttpClientFactory
+from .parser import Parser
 from requests import Session
 
 

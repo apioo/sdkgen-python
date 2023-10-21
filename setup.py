@@ -12,14 +12,20 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/apioo/sdkgen-python",
-    packages=setuptools.find_packages(),
+    packages=["sdkgen"],
+    package_data={"": ["LICENSE"]},
+    package_dir={"": "src"},
+    include_package_data=True,
+    python_requires='>=3',
+    install_requires=[
+        "requests",
+    ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent"
     ],
-    python_requires='>=3',
-    install_requires=[
-        "requests",
-    ]
+    tests_require=[
+        "pytest>=3"
+    ],
 )
