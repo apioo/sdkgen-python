@@ -9,7 +9,7 @@ class Parser:
         return self.base_url + "/" + self.substitute_parameters(path, parameters)
         pass
 
-    def substitute_parameters(self, path: str, parameters: dict[any]) -> str:
+    def substitute_parameters(self, path: str, parameters: dict[str, any]) -> str:
         parts = path.split("/")
         result = []
 
@@ -29,7 +29,7 @@ class Parser:
             elif part.startswith("{") and part.endswith("}"):
                 name = part[1:len(part) - 1]
 
-            if parameters[name]:
+            if name in parameters:
                 part = self.to_string(parameters[name])
 
             result.append(part)
