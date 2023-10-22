@@ -1,4 +1,5 @@
 import string
+import datetime
 
 
 class Parser:
@@ -14,7 +15,7 @@ class Parser:
         result = []
 
         for part in parts:
-            if part == None or part == "":
+            if part is None or part == "":
                 continue
 
             name = ""
@@ -38,5 +39,18 @@ class Parser:
         pass
 
     def to_string(self, value: any) -> string:
-        return "" + value
-        pass
+        t = type(value)
+        if t is int:
+            return str(value)
+        elif t is float:
+            return str(value)
+        elif t is bool:
+            return str(value)
+        elif t is str:
+            return str(value)
+        elif isinstance(t, datetime.date):
+            return value.isoformat()
+        else:
+            return ""
+
+    pass
