@@ -14,6 +14,7 @@ class AnonymousAuthenticator(AuthenticatorInterface):
         self.credentials = credentials
 
     def __call__(self, request):
+        return request
         pass
 
 
@@ -24,6 +25,7 @@ class HttpBasicAuthenticator(AuthenticatorInterface):
     def __call__(self, request):
         request.headers["Authorization"] = "Basic " + str(
             base64.b64encode(self.credentials.username + ":" + self.credentials.password))
+        return request
         pass
 
 
@@ -33,6 +35,7 @@ class HttpBearerAuthenticator(AuthenticatorInterface):
 
     def __call__(self, request):
         request.headers["Authorization"] = "Bearer " + self.credentials.token
+        return request
         pass
 
 
@@ -42,6 +45,7 @@ class ApiKeyAuthenticator(AuthenticatorInterface):
 
     def __call__(self, request):
         request.headers[self.credentials.name] = self.credentials.token
+        return request
         pass
 
 
@@ -51,6 +55,7 @@ class OAuth2Authenticator(AuthenticatorInterface):
 
     def __call__(self, request):
         request.headers["Authorization"] = "Bearer " + self.get_access_token()
+        return request
         pass
 
     def get_access_token(self) -> str:
