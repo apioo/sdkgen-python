@@ -1,6 +1,5 @@
 import requests
 from requests import Session
-from .client_abstract import ClientAbstract
 from .authenticator import AuthenticatorInterface
 
 
@@ -11,6 +10,6 @@ class HttpClientFactory:
     def factory(self) -> Session:
         session = requests.Session()
         session.auth = self.authenticator
-        session.headers['User-Agent'] = ClientAbstract.USER_AGENT
+        session.headers['User-Agent'] = 'SDKgen Client v1.0'
         session.headers['Accept'] = 'application/json'
         return session
