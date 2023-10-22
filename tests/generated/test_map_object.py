@@ -7,5 +7,5 @@ from dataclasses import dataclass
 from dataclasses_json import dataclass_json
 from typing import Dict
 from test_object import TestObject
-class TestMapObject(dict[str, TestObject]):
+class TestMapObject(Dict[str, TestObject]):
     pass
