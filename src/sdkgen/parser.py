@@ -35,7 +35,7 @@ class Parser:
 
             result.append(part)
 
-        return ",".join(result)
+        return "/".join(result)
         pass
 
     def to_string(self, value: any) -> string:
