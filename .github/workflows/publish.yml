@@ -33,8 +33,6 @@ jobs:
     environment:
       name: pypi
       url: https://pypi.org/p/sdkgen-client
-    permissions:
-      id-token: write
     steps:
       - name: Download all the dists
         uses: actions/download-artifact@v3
@@ -44,7 +42,7 @@ jobs:
       - name: Publish distribution to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          password: ${{ secrets.PYPI_TOKEN }}
+          password: "${{ secrets.PYPI_TOKEN }}"
   publish-to-testpypi:
     name: Publish Python distribution to TestPyPI
     needs:
@@ -53,8 +51,6 @@ jobs:
     environment:
       name: testpypi
       url: https://test.pypi.org/p/sdkgen-client
-    permissions:
-      id-token: write
     steps:
       - name: Download all the dists
         uses: actions/download-artifact@v3
@@ -64,5 +60,5 @@ jobs:
       - name: Publish distribution to TestPyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          password: ${{ secrets.PYPI_TOKEN }}
+          password: "${{ secrets.PYPI_TOKEN }}"
           repository-url: https://test.pypi.org/legacy/
