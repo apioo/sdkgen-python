@@ -4,9 +4,9 @@ import datetime
 
 class Parser:
     def __init__(self, base_url: str):
-        self.base_url = base_url
+        self.base_url = self.normalize_url(base_url)
 
-    def url(self, path: str, parameters: dict[any]) -> str:
+    def url(self, path: str, parameters: dict[str, any]) -> str:
         return self.base_url + "/" + self.substitute_parameters(path, parameters)
         pass
 
@@ -22,10 +22,10 @@ class Parser:
             if part.startswith(":"):
                 name = part[1:]
             elif part.startswith("$"):
-                pos = part.index("<")
-                if pos != -1:
+                try:
+                    pos = part.index("<")
                     name = part[1:pos]
-                else:
+                except ValueError:
                     name = part[1:]
             elif part.startswith("{") and part.endswith("}"):
                 name = part[1:len(part) - 1]
@@ -38,6 +38,20 @@ class Parser:
         return "/".join(result)
         pass
 
+    def query(self, parameters: dict[str, any], struct_names: list[str] = None) -> dict[str, any]:
+        result: dict[str, any] = {}
+        for name, value in parameters.items():
+            if value is None:
+                continue
+
+            if struct_names and name in struct_names:
+                result = result | self.query(value.to_dict())
+            else:
+                result[name] = self.to_string(value)
+
+        return result
+        pass
+
     def to_string(self, value: any) -> string:
         t = type(value)
         if t is int:
@@ -45,12 +59,22 @@ class Parser:
         elif t is float:
             return str(value)
         elif t is bool:
-            return str(value)
+            return "1" if value else "0"
         elif t is str:
             return str(value)
-        elif isinstance(t, datetime.date):
+        elif t is datetime.date:
+            return value.isoformat()
+        elif t is datetime.datetime:
+            return value.isoformat() + "Z"
+        elif t is datetime.time:
             return value.isoformat()
         else:
             return ""
+        pass
 
-    pass
+    def normalize_url(self, value: string) -> string:
+        if value.endswith("/"):
+            value = value[0:len(value) - 1]
+        return value
+        pass
+
