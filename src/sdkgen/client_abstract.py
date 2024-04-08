@@ -1,8 +1,7 @@
 from requests import Session
 
-from .authenticator import AuthenticatorFactory
+from .authenticator import AuthenticatorFactory, HttpClientFactory
 from .credentials import CredentialsInterface
-from .http_client_factory import HttpClientFactory
 from .parser import Parser
 
 

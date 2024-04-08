@@ -3,13 +3,13 @@ import time
 import urllib.parse
 from typing import List
 
+import requests
 from requests import Session, Response
 from requests.auth import AuthBase
 
 from .access_token import AccessToken
 from .credentials import HttpBasic, HttpBearer, ApiKey, OAuth2, Anonymous, CredentialsInterface
 from .exceptions import InvalidAccessTokenException, InvalidCredentialsException
-from .http_client_factory import HttpClientFactory
 from .token_store import MemoryTokenStore
 
 
@@ -182,4 +182,16 @@ class AuthenticatorFactory:
             return AnonymousAuthenticator(credentials)
         else:
             raise InvalidCredentialsException("Could not find authenticator for credentials")
+
+
+class HttpClientFactory:
+    def __init__(self, authenticator: AuthenticatorInterface):
+        self.authenticator = authenticator
+
+    def factory(self) -> Session:
+        session = requests.Session()
+        session.auth = self.authenticator
+        session.headers['User-Agent'] = 'SDKgen Client v1.0'
+        session.headers['Accept'] = 'application/json'
+        return session
 
