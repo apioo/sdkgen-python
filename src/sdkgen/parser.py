@@ -8,7 +8,6 @@ class Parser:
 
     def url(self, path: str, parameters: dict[str, any]) -> str:
         return self.base_url + "/" + self.substitute_parameters(path, parameters)
-        pass
 
     def substitute_parameters(self, path: str, parameters: dict[str, any]) -> str:
         parts = path.split("/")
@@ -36,7 +35,6 @@ class Parser:
             result.append(part)
 
         return "/".join(result)
-        pass
 
     def query(self, parameters: dict[str, any], struct_names: list[str] = None) -> dict[str, any]:
         result: dict[str, any] = {}
@@ -50,7 +48,6 @@ class Parser:
                 result[name] = self.to_string(value)
 
         return result
-        pass
 
     def to_string(self, value: any) -> string:
         t = type(value)
@@ -70,11 +67,8 @@ class Parser:
             return value.isoformat()
         else:
             return ""
-        pass
 
     def normalize_url(self, value: string) -> string:
         if value.endswith("/"):
             value = value[0:len(value) - 1]
         return value
-        pass
-

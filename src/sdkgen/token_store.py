@@ -20,14 +20,9 @@ class MemoryTokenStore(TokenStoreInterface):
 
     def get(self) -> AccessToken:
         return self.token
-        pass
 
     def persist(self, token: AccessToken):
         self.token = token
-        pass
 
     def remove(self):
         self.token = None
-        pass
-
-    pass

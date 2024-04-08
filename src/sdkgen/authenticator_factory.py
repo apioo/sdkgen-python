@@ -19,4 +19,3 @@ class AuthenticatorFactory:
             return AnonymousAuthenticator(credentials)
         else:
             raise InvalidCredentialsException("Could not find authenticator for credentials")
-        pass
