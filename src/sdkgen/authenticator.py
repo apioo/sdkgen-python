@@ -6,12 +6,11 @@ from typing import List
 from requests import Session, Response
 from requests.auth import AuthBase
 
-from .token_store import MemoryTokenStore
-from .exceptions import InvalidAccessTokenException
 from .access_token import AccessToken
-from .authenticator_factory import AuthenticatorFactory
 from .credentials import HttpBasic, HttpBearer, ApiKey, OAuth2, Anonymous, CredentialsInterface
+from .exceptions import InvalidAccessTokenException, InvalidCredentialsException
 from .http_client_factory import HttpClientFactory
+from .token_store import MemoryTokenStore
 
 
 class AuthenticatorInterface(AuthBase):
@@ -166,3 +165,21 @@ class OAuth2Authenticator(AuthenticatorInterface):
 
     def new_http_client(self, credentials: CredentialsInterface) -> Session:
         return HttpClientFactory(AuthenticatorFactory.factory(credentials)).factory()
+
+
+class AuthenticatorFactory:
+    @staticmethod
+    def factory(credentials: CredentialsInterface):
+        if isinstance(credentials, HttpBasic):
+            return HttpBasicAuthenticator(credentials)
+        elif isinstance(credentials, HttpBearer):
+            return HttpBearerAuthenticator(credentials)
+        elif isinstance(credentials, ApiKey):
+            return ApiKeyAuthenticator(credentials)
+        elif isinstance(credentials, OAuth2):
+            return OAuth2Authenticator(credentials)
+        elif isinstance(credentials, Anonymous):
+            return AnonymousAuthenticator(credentials)
+        else:
+            raise InvalidCredentialsException("Could not find authenticator for credentials")
+

@@ -1,6 +1,6 @@
 from requests import Session
 
-from .authenticator_factory import AuthenticatorFactory
+from .authenticator import AuthenticatorFactory
 from .credentials import CredentialsInterface
 from .http_client_factory import HttpClientFactory
 from .parser import Parser
