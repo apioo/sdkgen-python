@@ -30,8 +30,8 @@ class HttpBasicAuthenticator(AuthenticatorInterface):
         self.credentials = credentials
 
     def __call__(self, request):
-        request.headers["Authorization"] = "Basic " + str(
-            base64.b64encode((self.credentials.username + ":" + self.credentials.password).encode('utf-8')))
+        basic = base64.b64encode((self.credentials.username + ":" + self.credentials.password).encode('utf-8')).decode('ascii')
+        request.headers["Authorization"] = "Basic " + basic
         return request
 
 
