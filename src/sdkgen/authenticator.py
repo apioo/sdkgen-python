@@ -6,7 +6,8 @@ from typing import List
 from requests import Session, Response
 from requests.auth import AuthBase
 
-from . import InvalidAccessTokenException, MemoryTokenStore
+from .token_store import MemoryTokenStore
+from .exceptions import InvalidAccessTokenException
 from .access_token import AccessToken
 from .authenticator_factory import AuthenticatorFactory
 from .credentials import HttpBasic, HttpBearer, ApiKey, OAuth2, Anonymous, CredentialsInterface
