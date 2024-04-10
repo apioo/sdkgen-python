@@ -183,7 +183,7 @@ class OAuth2Authenticator(AuthenticatorInterface):
             raise InvalidAccessTokenException(
                 "Could not obtain access token, received a non successful status code: " + str(response.status_code))
 
-        token = AccessToken.from_json(response.content)
+        token = AccessToken.model_validate_json(json_data=response.content)
 
         cls.token_store.persist(token)
 
