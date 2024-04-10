@@ -14,11 +14,10 @@ class Client(sdkgen.ClientAbstract):
     def __init__(self, base_url: str, credentials: sdkgen.CredentialsInterface):
         super().__init__(base_url, credentials)
 
-    @classmethod
-    def product(cls) -> ProductTag:
+    def product(self) -> ProductTag:
         return ProductTag(
-            cls.http_client,
-            cls.parser
+            self.http_client,
+            self.parser
         )
 
 

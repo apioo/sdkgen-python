@@ -16,8 +16,7 @@ class ProductTag(sdkgen.TagAbstract):
         super().__init__(http_client, parser)
 
 
-    @classmethod
-    def get_all(cls, start_index: int, count: int, search: str) -> TestResponse:
+    def get_all(self, start_index: int, count: int, search: str) -> TestResponse:
         """
         Returns a collection
         """
@@ -31,11 +30,11 @@ class ProductTag(sdkgen.TagAbstract):
 
             query_struct_names = []
 
-            url = cls.parser.url("/anything", path_params)
+            url = self.parser.url("/anything", path_params)
 
             headers = {}
 
-            response = cls.http_client.get(url, headers=headers, params=cls.parser.query(query_params, query_struct_names))
+            response = self.http_client.get(url, headers=headers, params=self.parser.query(query_params, query_struct_names))
 
             if response.status_code >= 200 and response.status_code < 300:
                 return TestResponse.model_validate_json(json_data=response.content)
@@ -45,8 +44,7 @@ class ProductTag(sdkgen.TagAbstract):
         except RequestException as e:
             raise sdkgen.ClientException("An unknown error occurred: " + str(e))
 
-    @classmethod
-    def create(cls, payload: TestRequest) -> TestResponse:
+    def create(self, payload: TestRequest) -> TestResponse:
         """
         Creates a new product
         """
@@ -57,12 +55,12 @@ class ProductTag(sdkgen.TagAbstract):
 
             query_struct_names = []
 
-            url = cls.parser.url("/anything", path_params)
+            url = self.parser.url("/anything", path_params)
 
             headers = {}
             headers["Content-Type"] = "application/json"
 
-            response = cls.http_client.post(url, headers=headers, params=cls.parser.query(query_params, query_struct_names), json=payload.model_dump(by_alias=True))
+            response = self.http_client.post(url, headers=headers, params=self.parser.query(query_params, query_struct_names), json=payload.model_dump(by_alias=True))
 
             if response.status_code >= 200 and response.status_code < 300:
                 return TestResponse.model_validate_json(json_data=response.content)
@@ -72,8 +70,7 @@ class ProductTag(sdkgen.TagAbstract):
         except RequestException as e:
             raise sdkgen.ClientException("An unknown error occurred: " + str(e))
 
-    @classmethod
-    def update(cls, id: int, payload: TestRequest) -> TestResponse:
+    def update(self, id: int, payload: TestRequest) -> TestResponse:
         """
         Updates an existing product
         """
@@ -85,12 +82,12 @@ class ProductTag(sdkgen.TagAbstract):
 
             query_struct_names = []
 
-            url = cls.parser.url("/anything/:id", path_params)
+            url = self.parser.url("/anything/:id", path_params)
 
             headers = {}
             headers["Content-Type"] = "application/json"
 
-            response = cls.http_client.put(url, headers=headers, params=cls.parser.query(query_params, query_struct_names), json=payload.model_dump(by_alias=True))
+            response = self.http_client.put(url, headers=headers, params=self.parser.query(query_params, query_struct_names), json=payload.model_dump(by_alias=True))
 
             if response.status_code >= 200 and response.status_code < 300:
                 return TestResponse.model_validate_json(json_data=response.content)
@@ -100,8 +97,7 @@ class ProductTag(sdkgen.TagAbstract):
         except RequestException as e:
             raise sdkgen.ClientException("An unknown error occurred: " + str(e))
 
-    @classmethod
-    def patch(cls, id: int, payload: TestRequest) -> TestResponse:
+    def patch(self, id: int, payload: TestRequest) -> TestResponse:
         """
         Patches an existing product
         """
@@ -113,12 +109,12 @@ class ProductTag(sdkgen.TagAbstract):
 
             query_struct_names = []
 
-            url = cls.parser.url("/anything/:id", path_params)
+            url = self.parser.url("/anything/:id", path_params)
 
             headers = {}
             headers["Content-Type"] = "application/json"
 
-            response = cls.http_client.patch(url, headers=headers, params=cls.parser.query(query_params, query_struct_names), json=payload.model_dump(by_alias=True))
+            response = self.http_client.patch(url, headers=headers, params=self.parser.query(query_params, query_struct_names), json=payload.model_dump(by_alias=True))
 
             if response.status_code >= 200 and response.status_code < 300:
                 return TestResponse.model_validate_json(json_data=response.content)
@@ -128,8 +124,7 @@ class ProductTag(sdkgen.TagAbstract):
         except RequestException as e:
             raise sdkgen.ClientException("An unknown error occurred: " + str(e))
 
-    @classmethod
-    def delete(cls, id: int) -> TestResponse:
+    def delete(self, id: int) -> TestResponse:
         """
         Deletes an existing product
         """
@@ -141,11 +136,11 @@ class ProductTag(sdkgen.TagAbstract):
 
             query_struct_names = []
 
-            url = cls.parser.url("/anything/:id", path_params)
+            url = self.parser.url("/anything/:id", path_params)
 
             headers = {}
 
-            response = cls.http_client.delete(url, headers=headers, params=cls.parser.query(query_params, query_struct_names))
+            response = self.http_client.delete(url, headers=headers, params=self.parser.query(query_params, query_struct_names))
 
             if response.status_code >= 200 and response.status_code < 300:
                 return TestResponse.model_validate_json(json_data=response.content)
