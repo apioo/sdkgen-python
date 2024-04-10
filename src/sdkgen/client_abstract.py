@@ -9,6 +9,8 @@ class ClientAbstract:
     USER_AGENT = "SDKgen Client v1.0"
 
     authenticator: AuthenticatorInterface = None
+    http_client: Session = None
+    parser: Parser = None
 
     @classmethod
     def __init__(cls, base_url: str, credentials: CredentialsInterface):
@@ -18,6 +20,9 @@ class ClientAbstract:
 
 
 class TagAbstract:
+    http_client: Session = None
+    parser: Parser = None
+
     @classmethod
     def __init__(cls, http_client: Session, parser: Parser):
         cls.http_client = http_client
