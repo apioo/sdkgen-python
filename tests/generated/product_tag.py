@@ -39,7 +39,7 @@ class ProductTag(sdkgen.TagAbstract):
             response = cls.http_client.get(url, headers=headers, params=cls.parser.query(query_params, query_struct_names))
 
             if response.status_code >= 200 and response.status_code < 300:
-                return TestResponse.from_json(response.content)
+                return TestResponse.model_validate_json(json_data=response.content)
 
 
             raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
@@ -63,10 +63,10 @@ class ProductTag(sdkgen.TagAbstract):
             headers = {}
             headers["Content-Type"] = "application/json"
 
-            response = cls.http_client.post(url, headers=headers, params=cls.parser.query(query_params, query_struct_names), data=payload.to_json())
+            response = cls.http_client.post(url, headers=headers, params=cls.parser.query(query_params, query_struct_names), json=payload.model_dump())
 
             if response.status_code >= 200 and response.status_code < 300:
-                return TestResponse.from_json(response.content)
+                return TestResponse.model_validate_json(json_data=response.content)
 
 
             raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
@@ -91,10 +91,10 @@ class ProductTag(sdkgen.TagAbstract):
             headers = {}
             headers["Content-Type"] = "application/json"
 
-            response = cls.http_client.put(url, headers=headers, params=cls.parser.query(query_params, query_struct_names), data=payload.to_json())
+            response = cls.http_client.put(url, headers=headers, params=cls.parser.query(query_params, query_struct_names), json=payload.model_dump())
 
             if response.status_code >= 200 and response.status_code < 300:
-                return TestResponse.from_json(response.content)
+                return TestResponse.model_validate_json(json_data=response.content)
 
 
             raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
@@ -119,10 +119,10 @@ class ProductTag(sdkgen.TagAbstract):
             headers = {}
             headers["Content-Type"] = "application/json"
 
-            response = cls.http_client.patch(url, headers=headers, params=cls.parser.query(query_params, query_struct_names), data=payload.to_json())
+            response = cls.http_client.patch(url, headers=headers, params=cls.parser.query(query_params, query_struct_names), json=payload.model_dump())
 
             if response.status_code >= 200 and response.status_code < 300:
-                return TestResponse.from_json(response.content)
+                return TestResponse.model_validate_json(json_data=response.content)
 
 
             raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
@@ -149,7 +149,7 @@ class ProductTag(sdkgen.TagAbstract):
             response = cls.http_client.delete(url, headers=headers, params=cls.parser.query(query_params, query_struct_names))
 
             if response.status_code >= 200 and response.status_code < 300:
-                return TestResponse.from_json(response.content)
+                return TestResponse.model_validate_json(json_data=response.content)
 
 
             raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
