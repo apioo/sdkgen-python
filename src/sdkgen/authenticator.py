@@ -18,25 +18,21 @@ class AuthenticatorInterface(AuthBase):
 
 
 class AnonymousAuthenticator(AuthenticatorInterface):
-    @classmethod
-    def __init__(cls, credentials: Anonymous):
-        cls.credentials = credentials
+    def __init__(self, credentials: Anonymous):
+        self.credentials = credentials
 
-    @classmethod
-    def __call__(cls, request):
+    def __call__(self, request):
         return request
 
 
 class HttpBasicAuthenticator(AuthenticatorInterface):
     credentials: HttpBasic = None
 
-    @classmethod
-    def __init__(cls, credentials: HttpBasic):
-        cls.credentials = credentials
+    def __init__(self, credentials: HttpBasic):
+        self.credentials = credentials
 
-    @classmethod
-    def __call__(cls, request):
-        basic = base64.b64encode((cls.credentials.username + ":" + cls.credentials.password).encode('utf-8')).decode('ascii')
+    def __call__(self, request):
+        basic = base64.b64encode((self.credentials.username + ":" + self.credentials.password).encode('utf-8')).decode('ascii')
         request.headers["Authorization"] = "Basic " + basic
         return request
 
@@ -44,26 +40,22 @@ class HttpBasicAuthenticator(AuthenticatorInterface):
 class HttpBearerAuthenticator(AuthenticatorInterface):
     credentials: HttpBearer = None
 
-    @classmethod
-    def __init__(cls, credentials: HttpBearer):
-        cls.credentials = credentials
+    def __init__(self, credentials: HttpBearer):
+        self.credentials = credentials
 
-    @classmethod
-    def __call__(cls, request):
-        request.headers["Authorization"] = "Bearer " + cls.credentials.token
+    def __call__(self, request):
+        request.headers["Authorization"] = "Bearer " + self.credentials.token
         return request
 
 
 class ApiKeyAuthenticator(AuthenticatorInterface):
     credentials: ApiKey = None
 
-    @classmethod
-    def __init__(cls, credentials: ApiKey):
-        cls.credentials = credentials
+    def __init__(self, credentials: ApiKey):
+        self.credentials = credentials
 
-    @classmethod
-    def __call__(cls, request):
-        request.headers[cls.credentials.name] = cls.credentials.token
+    def __call__(self, request):
+        request.headers[self.credentials.name] = self.credentials.token
         return request
 
 
@@ -74,18 +66,16 @@ class OAuth2Authenticator(AuthenticatorInterface):
     scopes: Optional[list[str]] = None
     token_store: TokenStoreInterface = None
 
-    @classmethod
-    def __init__(cls, credentials: OAuth2):
-        cls.credentials = credentials
-        cls.scopes = credentials.scopes
+    def __init__(self, credentials: OAuth2):
+        self.credentials = credentials
+        self.scopes = credentials.scopes
         if credentials.token_store:
-            cls.token_store = credentials.token_store
+            self.token_store = credentials.token_store
         else:
-            cls.token_store = MemoryTokenStore()
+            self.token_store = MemoryTokenStore()
 
-    @classmethod
-    def __call__(cls, request):
-        request.headers["Authorization"] = "Bearer " + cls.get_access_token()
+    def __call__(self, request):
+        request.headers["Authorization"] = "Bearer " + self.get_access_token()
         return request
 
     @classmethod
@@ -214,9 +204,8 @@ class AuthenticatorFactory:
 class HttpClientFactory:
     authenticator: AuthenticatorInterface = None
 
-    @classmethod
-    def __init__(cls, authenticator: AuthenticatorInterface):
-        cls.authenticator = authenticator
+    def __init__(self, authenticator: AuthenticatorInterface):
+        self.authenticator = authenticator
 
     @classmethod
     def factory(cls) -> Session:

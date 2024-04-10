@@ -16,27 +16,24 @@ class ApiKey(CredentialsInterface):
     name: str = None
     in_: str = None
 
-    @classmethod
-    def __init__(cls, token: str, name: str, in_: str):
-        cls.token = token
-        cls.name = name
-        cls.in_ = in_
+    def __init__(self, token: str, name: str, in_: str):
+        self.token = token
+        self.name = name
+        self.in_ = in_
 
 
 class HttpBasic(CredentialsInterface):
     username: str = None
     password: str = None
 
-    @classmethod
-    def __init__(cls, username: str, password: str):
-        cls.username = username
-        cls.password = password
+    def __init__(self, username: str, password: str):
+        self.username = username
+        self.password = password
 
 
 class HttpBearer(CredentialsInterface):
-    @classmethod
-    def __init__(cls, token: str):
-        cls.token = token
+    def __init__(self, token: str):
+        self.token = token
 
 
 class OAuth2(CredentialsInterface):
@@ -47,12 +44,11 @@ class OAuth2(CredentialsInterface):
     token_store: Optional[TokenStoreInterface] = None
     scopes: Optional[list[str]] = None
 
-    @classmethod
-    def __init__(cls, client_id: str, client_secret: str, token_url: str, authorization_url: str,
+    def __init__(self, client_id: str, client_secret: str, token_url: str, authorization_url: str,
                  token_store: Optional[TokenStoreInterface], scopes: Optional[list[str]]):
-        cls.client_id = client_id
-        cls.client_secret = client_secret
-        cls.token_url = token_url
-        cls.authorization_url = authorization_url
-        cls.token_store = token_store
-        cls.scopes = scopes
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self.token_url = token_url
+        self.authorization_url = authorization_url
+        self.token_store = token_store
+        self.scopes = scopes

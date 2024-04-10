@@ -22,9 +22,8 @@ class TokenStoreInterface:
 class MemoryTokenStore(TokenStoreInterface):
     token: Optional[AccessToken] = None
 
-    @classmethod
-    def __init__(cls):
-        cls.token = None
+    def __init__(self):
+        self.token = None
 
     @classmethod
     def get(cls) -> AccessToken:

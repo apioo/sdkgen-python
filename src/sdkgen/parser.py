@@ -5,9 +5,8 @@ import datetime
 class Parser:
     base_url: str = None
 
-    @classmethod
-    def __init__(cls, base_url: str):
-        cls.base_url = cls.normalize_url(base_url)
+    def __init__(self, base_url: str):
+        self.base_url = self.normalize_url(base_url)
 
     @classmethod
     def url(cls, path: str, parameters: dict[str, any]) -> str:
