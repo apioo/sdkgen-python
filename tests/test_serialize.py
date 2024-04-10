@@ -1,5 +1,7 @@
+import time
 import unittest
 
+from src.sdkgen.access_token import AccessToken
 from tests.generated.test_request import TestRequest
 
 
@@ -14,6 +16,16 @@ class TestSerialize(unittest.TestCase):
         self.assertEqual("foobar", response.string)
         self.assertEqual(True, response.bool_)
         self.assertEqual(["foo", "bar"], response.array_scalar)
+
+    def test_serialize_access_token(self):
+        json = '{"access_token": "foobar", "expires_in": 1337}'
+
+        token = AccessToken.model_validate_json(json_data=json)
+        now = time.time()
+
+        self.assertEqual("foobar", token.access_token)
+        self.assertEqual(1337, token.expires_in)
+        self.assertTrue(token.get_expires_in_timestamp() >= now + 1337)
 
 
 if __name__ == '__main__':
