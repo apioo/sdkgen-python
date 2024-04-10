@@ -5,143 +5,155 @@ https://sdkgen.app
 
 import requests
 import sdkgen
+from requests import RequestException
+from typing import List
 
-from test_request import TestRequest
-from test_response import TestResponse
+from .test_request import TestRequest
+from .test_response import TestResponse
 
 class ProductTag(sdkgen.TagAbstract):
-    def __init__(self, http_client: requests.Session, parser: sdkgen.Parser):
+    @classmethod
+    def __init__(cls, http_client: requests.Session, parser: sdkgen.Parser):
         super().__init__(http_client, parser)
-    pass
 
 
-    """
-    Returns a collection
-    """
-    def get_all(self, start_index: int, count: int, search: str) -> TestResponse:
+    @classmethod
+    def get_all(cls, start_index: int, count: int, search: str) -> TestResponse:
+        """
+        Returns a collection
+        """
         try:
-            pathParams = {}
+            path_params = {}
 
-            queryParams = {}
-            queryParams["startIndex"] = start_index
-            queryParams["count"] = count
-            queryParams["search"] = search
+            query_params = {}
+            query_params["startIndex"] = start_index
+            query_params["count"] = count
+            query_params["search"] = search
 
-            url = self.parser.url("/anything", pathParams)
+            query_struct_names = []
+
+            url = cls.parser.url("/anything", path_params)
 
             headers = {}
 
-            response = self.http_client.get(url, headers=headers, params=queryParams)
+            response = cls.http_client.get(url, headers=headers, params=cls.parser.query(query_params, query_struct_names))
 
             if response.status_code >= 200 and response.status_code < 300:
                 return TestResponse.from_json(response.content)
 
 
             raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
-        except Exception as e:
+        except RequestException as e:
             raise sdkgen.ClientException("An unknown error occurred: " + str(e))
-    pass
 
-    """
-    Creates a new product
-    """
-    def create(self, payload: TestRequest) -> TestResponse:
+    @classmethod
+    def create(cls, payload: TestRequest) -> TestResponse:
+        """
+        Creates a new product
+        """
         try:
-            pathParams = {}
+            path_params = {}
 
-            queryParams = {}
+            query_params = {}
 
-            url = self.parser.url("/anything", pathParams)
+            query_struct_names = []
 
-            headers = {}
-            headers["Content-Type"] = "application/json"
-
-            response = self.http_client.post(url, headers=headers, params=queryParams, data=payload.to_json())
-
-            if response.status_code >= 200 and response.status_code < 300:
-                return TestResponse.from_json(response.content)
-
-
-            raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
-        except Exception as e:
-            raise sdkgen.ClientException("An unknown error occurred: " + str(e))
-    pass
-
-    """
-    Updates an existing product
-    """
-    def update(self, id: int, payload: TestRequest) -> TestResponse:
-        try:
-            pathParams = {}
-            pathParams["id"] = id
-
-            queryParams = {}
-
-            url = self.parser.url("/anything/:id", pathParams)
+            url = cls.parser.url("/anything", path_params)
 
             headers = {}
             headers["Content-Type"] = "application/json"
 
-            response = self.http_client.put(url, headers=headers, params=queryParams, data=payload.to_json())
+            response = cls.http_client.post(url, headers=headers, params=cls.parser.query(query_params, query_struct_names), data=payload.to_json())
 
             if response.status_code >= 200 and response.status_code < 300:
                 return TestResponse.from_json(response.content)
 
 
             raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
-        except Exception as e:
+        except RequestException as e:
             raise sdkgen.ClientException("An unknown error occurred: " + str(e))
-    pass
 
-    """
-    Patches an existing product
-    """
-    def patch(self, id: int, payload: TestRequest) -> TestResponse:
+    @classmethod
+    def update(cls, id: int, payload: TestRequest) -> TestResponse:
+        """
+        Updates an existing product
+        """
         try:
-            pathParams = {}
-            pathParams["id"] = id
+            path_params = {}
+            path_params["id"] = id
 
-            queryParams = {}
+            query_params = {}
 
-            url = self.parser.url("/anything/:id", pathParams)
+            query_struct_names = []
+
+            url = cls.parser.url("/anything/:id", path_params)
 
             headers = {}
             headers["Content-Type"] = "application/json"
 
-            response = self.http_client.patch(url, headers=headers, params=queryParams, data=payload.to_json())
+            response = cls.http_client.put(url, headers=headers, params=cls.parser.query(query_params, query_struct_names), data=payload.to_json())
 
             if response.status_code >= 200 and response.status_code < 300:
                 return TestResponse.from_json(response.content)
 
 
             raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
-        except Exception as e:
+        except RequestException as e:
             raise sdkgen.ClientException("An unknown error occurred: " + str(e))
-    pass
 
-    """
-    Deletes an existing product
-    """
-    def delete(self, id: int) -> TestResponse:
+    @classmethod
+    def patch(cls, id: int, payload: TestRequest) -> TestResponse:
+        """
+        Patches an existing product
+        """
         try:
-            pathParams = {}
-            pathParams["id"] = id
+            path_params = {}
+            path_params["id"] = id
 
-            queryParams = {}
+            query_params = {}
 
-            url = self.parser.url("/anything/:id", pathParams)
+            query_struct_names = []
+
+            url = cls.parser.url("/anything/:id", path_params)
+
+            headers = {}
+            headers["Content-Type"] = "application/json"
+
+            response = cls.http_client.patch(url, headers=headers, params=cls.parser.query(query_params, query_struct_names), data=payload.to_json())
+
+            if response.status_code >= 200 and response.status_code < 300:
+                return TestResponse.from_json(response.content)
+
+
+            raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
+        except RequestException as e:
+            raise sdkgen.ClientException("An unknown error occurred: " + str(e))
+
+    @classmethod
+    def delete(cls, id: int) -> TestResponse:
+        """
+        Deletes an existing product
+        """
+        try:
+            path_params = {}
+            path_params["id"] = id
+
+            query_params = {}
+
+            query_struct_names = []
+
+            url = cls.parser.url("/anything/:id", path_params)
 
             headers = {}
 
-            response = self.http_client.delete(url, headers=headers, params=queryParams)
+            response = cls.http_client.delete(url, headers=headers, params=cls.parser.query(query_params, query_struct_names))
 
             if response.status_code >= 200 and response.status_code < 300:
                 return TestResponse.from_json(response.content)
 
 
             raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
-        except Exception as e:
+        except RequestException as e:
             raise sdkgen.ClientException("An unknown error occurred: " + str(e))
-    pass
 
 
