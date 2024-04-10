@@ -1,8 +1,6 @@
 import unittest
 
-from tests.generated.test_object import TestObject
 from tests.generated.test_request import TestRequest
-from tests.generated.test_response import TestResponse
 
 
 class TestSerialize(unittest.TestCase):

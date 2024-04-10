@@ -63,7 +63,7 @@ class ProductTag(sdkgen.TagAbstract):
             headers = {}
             headers["Content-Type"] = "application/json"
 
-            response = cls.http_client.post(url, headers=headers, params=cls.parser.query(query_params, query_struct_names), json=payload.model_dump())
+            response = cls.http_client.post(url, headers=headers, params=cls.parser.query(query_params, query_struct_names), json=payload.model_dump(by_alias=True))
 
             if response.status_code >= 200 and response.status_code < 300:
                 return TestResponse.model_validate_json(json_data=response.content)
@@ -91,7 +91,7 @@ class ProductTag(sdkgen.TagAbstract):
             headers = {}
             headers["Content-Type"] = "application/json"
 
-            response = cls.http_client.put(url, headers=headers, params=cls.parser.query(query_params, query_struct_names), json=payload.model_dump())
+            response = cls.http_client.put(url, headers=headers, params=cls.parser.query(query_params, query_struct_names), json=payload.model_dump(by_alias=True))
 
             if response.status_code >= 200 and response.status_code < 300:
                 return TestResponse.model_validate_json(json_data=response.content)
@@ -119,7 +119,7 @@ class ProductTag(sdkgen.TagAbstract):
             headers = {}
             headers["Content-Type"] = "application/json"
 
-            response = cls.http_client.patch(url, headers=headers, params=cls.parser.query(query_params, query_struct_names), json=payload.model_dump())
+            response = cls.http_client.patch(url, headers=headers, params=cls.parser.query(query_params, query_struct_names), json=payload.model_dump(by_alias=True))
 
             if response.status_code >= 200 and response.status_code < 300:
                 return TestResponse.model_validate_json(json_data=response.content)
