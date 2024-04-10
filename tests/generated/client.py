@@ -4,10 +4,10 @@ https://sdkgen.app
 """
 
 import requests
-import sdkgen
 from requests import RequestException
 from typing import List
 
+from src import sdkgen
 from .product_tag import ProductTag
 
 class Client(sdkgen.ClientAbstract):

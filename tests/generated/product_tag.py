@@ -4,10 +4,10 @@ https://sdkgen.app
 """
 
 import requests
-import sdkgen
 from requests import RequestException
 from typing import List
 
+from src import sdkgen
 from .test_request import TestRequest
 from .test_response import TestResponse
 
