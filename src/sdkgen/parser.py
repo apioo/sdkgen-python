@@ -8,9 +8,8 @@ class Parser:
     def __init__(self, base_url: str):
         self.base_url = self.normalize_url(base_url)
 
-    @classmethod
-    def url(cls, path: str, parameters: dict[str, any]) -> str:
-        return cls.base_url + "/" + cls.substitute_parameters(path, parameters)
+    def url(self, path: str, parameters: dict[str, any]) -> str:
+        return self.base_url + "/" + self.substitute_parameters(path, parameters)
 
     @classmethod
     def substitute_parameters(cls, path: str, parameters: dict[str, any]) -> str:

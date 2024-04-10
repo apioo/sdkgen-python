@@ -4,19 +4,14 @@ from .access_token import AccessToken
 
 
 class TokenStoreInterface:
-    @classmethod
-    def get(cls) -> AccessToken:
+    def get(self) -> AccessToken:
         pass
 
-    @classmethod
-    def persist(cls, token: AccessToken):
+    def persist(self, token: AccessToken):
         pass
 
-    @classmethod
-    def remove(cls):
+    def remove(self):
         pass
-
-    pass
 
 
 class MemoryTokenStore(TokenStoreInterface):
@@ -25,14 +20,11 @@ class MemoryTokenStore(TokenStoreInterface):
     def __init__(self):
         self.token = None
 
-    @classmethod
-    def get(cls) -> AccessToken:
-        return cls.token
+    def get(self) -> AccessToken:
+        return self.token
 
-    @classmethod
-    def persist(cls, token: AccessToken):
-        cls.token = token
+    def persist(self, token: AccessToken):
+        self.token = token
 
-    @classmethod
-    def remove(cls):
-        cls.token = None
+    def remove(self):
+        self.token = None
