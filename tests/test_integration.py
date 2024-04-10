@@ -29,8 +29,7 @@ class TestIntegration(unittest.TestCase):
         self.assertEqual(response.headers["Accept"], "application/json")
         self.assertEqual(response.headers["User-Agent"], "SDKgen Client v1.0")
         self.assertEqual(response.method, "POST")
-        self.assertEqual(response.json.to_json(),
-                         '{"int": 1337, "float": 13.37, "string": "foobar", "bool": true, "array_scalar": ["foo", "bar"], "array_object": [{"id": 1, "name": "foo"}, {"id": 1, "name": "bar"}], "map_scalar": {"bar": "foo", "foo": "bar"}, "map_object": {"bar": {"id": 1, "name": "bar"}, "foo": {"id": 1, "name": "foo"}}, "object": {"id": 1, "name": "foo"}}')
+        self.assertEqual(response.json.model_dump_json(), '{"int": 1337, "float": 13.37, "string": "foobar", "bool": true, "array_scalar": ["foo", "bar"], "array_object": [{"id": 1, "name": "foo"}, {"id": 1, "name": "bar"}], "map_scalar": {"bar": "foo", "foo": "bar"}, "map_object": {"bar": {"id": 1, "name": "bar"}, "foo": {"id": 1, "name": "foo"}}, "object": {"id": 1, "name": "foo"}}')
 
     def test_client_update(self):
         client = Client.build("my_token")
@@ -42,8 +41,7 @@ class TestIntegration(unittest.TestCase):
         self.assertEqual(response.headers["Accept"], "application/json")
         self.assertEqual(response.headers["User-Agent"], "SDKgen Client v1.0")
         self.assertEqual(response.method, "PUT")
-        self.assertEqual(response.json.to_json(),
-                         '{"int": 1337, "float": 13.37, "string": "foobar", "bool": true, "array_scalar": ["foo", "bar"], "array_object": [{"id": 1, "name": "foo"}, {"id": 1, "name": "bar"}], "map_scalar": {"bar": "foo", "foo": "bar"}, "map_object": {"bar": {"id": 1, "name": "bar"}, "foo": {"id": 1, "name": "foo"}}, "object": {"id": 1, "name": "foo"}}')
+        self.assertEqual(response.json.model_dump_json(), '{"int": 1337, "float": 13.37, "string": "foobar", "bool": true, "array_scalar": ["foo", "bar"], "array_object": [{"id": 1, "name": "foo"}, {"id": 1, "name": "bar"}], "map_scalar": {"bar": "foo", "foo": "bar"}, "map_object": {"bar": {"id": 1, "name": "bar"}, "foo": {"id": 1, "name": "foo"}}, "object": {"id": 1, "name": "foo"}}')
 
     def test_client_patch(self):
         client = Client.build("my_token")
@@ -55,8 +53,7 @@ class TestIntegration(unittest.TestCase):
         self.assertEqual(response.headers["Accept"], "application/json")
         self.assertEqual(response.headers["User-Agent"], "SDKgen Client v1.0")
         self.assertEqual(response.method, "PATCH")
-        self.assertEqual(response.json.to_json(),
-                         '{"int": 1337, "float": 13.37, "string": "foobar", "bool": true, "array_scalar": ["foo", "bar"], "array_object": [{"id": 1, "name": "foo"}, {"id": 1, "name": "bar"}], "map_scalar": {"bar": "foo", "foo": "bar"}, "map_object": {"bar": {"id": 1, "name": "bar"}, "foo": {"id": 1, "name": "foo"}}, "object": {"id": 1, "name": "foo"}}')
+        self.assertEqual(response.json.model_dump_json(), '{"int": 1337, "float": 13.37, "string": "foobar", "bool": true, "array_scalar": ["foo", "bar"], "array_object": [{"id": 1, "name": "foo"}, {"id": 1, "name": "bar"}], "map_scalar": {"bar": "foo", "foo": "bar"}, "map_object": {"bar": {"id": 1, "name": "bar"}, "foo": {"id": 1, "name": "foo"}}, "object": {"id": 1, "name": "foo"}}')
 
     def test_client_delete(self):
         client = Client.build("my_token")
@@ -70,8 +67,12 @@ class TestIntegration(unittest.TestCase):
         self.assertEqual(response.json, None)
 
     def new_payload(self) -> TestRequest:
-        object_foo = TestObject(1, "foo")
-        object_bar = TestObject(1, "bar")
+        object_foo = TestObject()
+        object_foo.id = 1
+        object_foo.name = "foo"
+        object_bar = TestObject()
+        object_bar.id = 1
+        object_bar.name = "bar"
 
         array_scalar = ["foo", "bar"]
         array_object = [object_foo, object_bar]
@@ -79,7 +80,17 @@ class TestIntegration(unittest.TestCase):
         map_scalar = {"foo": "bar", "bar": "foo"}
         map_object = {"foo": object_foo, "bar": object_bar}
 
-        return TestRequest(1337, 13.37, "foobar", True, array_scalar, array_object, map_scalar, map_object, object_foo)
+        request = TestRequest()
+        request.int_ = 1337
+        request.float_ = 13.37
+        request.string = "foobar"
+        request.bool_ = True
+        request.array_scalar = array_scalar
+        request.array_object = array_object
+        request.map_scalar = map_scalar
+        request.map_object = map_object
+        request.object = object_foo
+        return request
 
 
 if __name__ == '__main__':
