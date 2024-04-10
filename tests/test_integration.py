@@ -29,7 +29,7 @@ class TestIntegration(unittest.TestCase):
         self.assertEqual(response.headers["Accept"], "application/json")
         self.assertEqual(response.headers["User-Agent"], "SDKgen Client v1.0")
         self.assertEqual(response.method, "POST")
-        self.assertEqual(response.json.model_dump_json(), '{"int": 1337, "float": 13.37, "string": "foobar", "bool": true, "array_scalar": ["foo", "bar"], "array_object": [{"id": 1, "name": "foo"}, {"id": 1, "name": "bar"}], "map_scalar": {"bar": "foo", "foo": "bar"}, "map_object": {"bar": {"id": 1, "name": "bar"}, "foo": {"id": 1, "name": "foo"}}, "object": {"id": 1, "name": "foo"}}')
+        self.assertEqual(response.json.model_dump_json(), '{"int": 1337, "float": 13.37, "string": "foobar", "bool": true, "arrayScalar": ["foo", "bar"], "arrayObject": [{"id": 1, "name": "foo"}, {"id": 1, "name": "bar"}], "mapScalar": {"bar": "foo", "foo": "bar"}, "mapObject": {"bar": {"id": 1, "name": "bar"}, "foo": {"id": 1, "name": "foo"}}, "object": {"id": 1, "name": "foo"}}')
 
     def test_client_update(self):
         client = Client.build("my_token")
@@ -41,7 +41,7 @@ class TestIntegration(unittest.TestCase):
         self.assertEqual(response.headers["Accept"], "application/json")
         self.assertEqual(response.headers["User-Agent"], "SDKgen Client v1.0")
         self.assertEqual(response.method, "PUT")
-        self.assertEqual(response.json.model_dump_json(), '{"int": 1337, "float": 13.37, "string": "foobar", "bool": true, "array_scalar": ["foo", "bar"], "array_object": [{"id": 1, "name": "foo"}, {"id": 1, "name": "bar"}], "map_scalar": {"bar": "foo", "foo": "bar"}, "map_object": {"bar": {"id": 1, "name": "bar"}, "foo": {"id": 1, "name": "foo"}}, "object": {"id": 1, "name": "foo"}}')
+        self.assertEqual(response.json.model_dump_json(), '{"int": 1337, "float": 13.37, "string": "foobar", "bool": true, "arrayScalar": ["foo", "bar"], "arrayObject": [{"id": 1, "name": "foo"}, {"id": 1, "name": "bar"}], "mapScalar": {"bar": "foo", "foo": "bar"}, "mapObject": {"bar": {"id": 1, "name": "bar"}, "foo": {"id": 1, "name": "foo"}}, "object": {"id": 1, "name": "foo"}}')
 
     def test_client_patch(self):
         client = Client.build("my_token")
@@ -53,7 +53,7 @@ class TestIntegration(unittest.TestCase):
         self.assertEqual(response.headers["Accept"], "application/json")
         self.assertEqual(response.headers["User-Agent"], "SDKgen Client v1.0")
         self.assertEqual(response.method, "PATCH")
-        self.assertEqual(response.json.model_dump_json(), '{"int": 1337, "float": 13.37, "string": "foobar", "bool": true, "array_scalar": ["foo", "bar"], "array_object": [{"id": 1, "name": "foo"}, {"id": 1, "name": "bar"}], "map_scalar": {"bar": "foo", "foo": "bar"}, "map_object": {"bar": {"id": 1, "name": "bar"}, "foo": {"id": 1, "name": "foo"}}, "object": {"id": 1, "name": "foo"}}')
+        self.assertEqual(response.json.model_dump_json(), '{"int": 1337, "float": 13.37, "string": "foobar", "bool": true, "arrayScalar": ["foo", "bar"], "arrayObject": [{"id": 1, "name": "foo"}, {"id": 1, "name": "bar"}], "mapScalar": {"bar": "foo", "foo": "bar"}, "mapObject": {"bar": {"id": 1, "name": "bar"}, "foo": {"id": 1, "name": "foo"}}, "object": {"id": 1, "name": "foo"}}')
 
     def test_client_delete(self):
         client = Client.build("my_token")
