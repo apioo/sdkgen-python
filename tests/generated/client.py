@@ -11,8 +11,7 @@ from src import sdkgen
 from .product_tag import ProductTag
 
 class Client(sdkgen.ClientAbstract):
-    @classmethod
-    def __init__(cls, base_url: str, credentials: sdkgen.CredentialsInterface):
+    def __init__(self, base_url: str, credentials: sdkgen.CredentialsInterface):
         super().__init__(base_url, credentials)
 
     @classmethod

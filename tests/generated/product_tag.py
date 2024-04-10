@@ -12,8 +12,7 @@ from .test_request import TestRequest
 from .test_response import TestResponse
 
 class ProductTag(sdkgen.TagAbstract):
-    @classmethod
-    def __init__(cls, http_client: requests.Session, parser: sdkgen.Parser):
+    def __init__(self, http_client: requests.Session, parser: sdkgen.Parser):
         super().__init__(http_client, parser)
 
 
