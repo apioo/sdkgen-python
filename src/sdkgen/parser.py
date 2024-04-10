@@ -49,7 +49,7 @@ class Parser:
                 continue
 
             if struct_names and name in struct_names:
-                result = result | cls.query(value.to_dict())
+                result = result | cls.query(value.model_dump())
             else:
                 result[name] = cls.to_string(value)
 
