@@ -1,7 +1,7 @@
 import base64
 import time
 import urllib.parse
-from typing import List
+from typing import List, Optional
 
 import requests
 from requests import Session, Response
@@ -10,7 +10,7 @@ from requests.auth import AuthBase
 from .access_token import AccessToken
 from .credentials import HttpBasic, HttpBearer, ApiKey, OAuth2, Anonymous, CredentialsInterface
 from .exceptions import InvalidAccessTokenException, InvalidCredentialsException
-from .token_store import MemoryTokenStore
+from .token_store import MemoryTokenStore, TokenStoreInterface
 
 
 class AuthenticatorInterface(AuthBase):
@@ -18,60 +18,81 @@ class AuthenticatorInterface(AuthBase):
 
 
 class AnonymousAuthenticator(AuthenticatorInterface):
-    def __init__(self, credentials: Anonymous):
-        self.credentials = credentials
+    @classmethod
+    def __init__(cls, credentials: Anonymous):
+        cls.credentials = credentials
 
-    def __call__(self, request):
+    @classmethod
+    def __call__(cls, request):
         return request
 
 
 class HttpBasicAuthenticator(AuthenticatorInterface):
-    def __init__(self, credentials: HttpBasic):
-        self.credentials = credentials
+    credentials: HttpBasic = None
 
-    def __call__(self, request):
-        basic = base64.b64encode((self.credentials.username + ":" + self.credentials.password).encode('utf-8')).decode('ascii')
+    @classmethod
+    def __init__(cls, credentials: HttpBasic):
+        cls.credentials = credentials
+
+    @classmethod
+    def __call__(cls, request):
+        basic = base64.b64encode((cls.credentials.username + ":" + cls.credentials.password).encode('utf-8')).decode('ascii')
         request.headers["Authorization"] = "Basic " + basic
         return request
 
 
 class HttpBearerAuthenticator(AuthenticatorInterface):
-    def __init__(self, credentials: HttpBearer):
-        self.credentials = credentials
+    credentials: HttpBearer = None
 
-    def __call__(self, request):
-        request.headers["Authorization"] = "Bearer " + self.credentials.token
+    @classmethod
+    def __init__(cls, credentials: HttpBearer):
+        cls.credentials = credentials
+
+    @classmethod
+    def __call__(cls, request):
+        request.headers["Authorization"] = "Bearer " + cls.credentials.token
         return request
 
 
 class ApiKeyAuthenticator(AuthenticatorInterface):
-    def __init__(self, credentials: ApiKey):
-        self.credentials = credentials
+    credentials: ApiKey = None
 
-    def __call__(self, request):
-        request.headers[self.credentials.name] = self.credentials.token
+    @classmethod
+    def __init__(cls, credentials: ApiKey):
+        cls.credentials = credentials
+
+    @classmethod
+    def __call__(cls, request):
+        request.headers[cls.credentials.name] = cls.credentials.token
         return request
 
 
 class OAuth2Authenticator(AuthenticatorInterface):
     EXPIRE_THRESHOLD: int = 60 * 10
 
-    def __init__(self, credentials: OAuth2):
-        self.credentials = credentials
-        self.scopes = credentials.scopes
-        if credentials.token_store:
-            self.token_store = credentials.token_store
-        else:
-            self.token_store = MemoryTokenStore()
+    credentials: OAuth2 = None
+    scopes: Optional[list[str]] = None
+    token_store: TokenStoreInterface = None
 
-    def __call__(self, request):
-        request.headers["Authorization"] = "Bearer " + self.get_access_token()
+    @classmethod
+    def __init__(cls, credentials: OAuth2):
+        cls.credentials = credentials
+        cls.scopes = credentials.scopes
+        if credentials.token_store:
+            cls.token_store = credentials.token_store
+        else:
+            cls.token_store = MemoryTokenStore()
+
+    @classmethod
+    def __call__(cls, request):
+        request.headers["Authorization"] = "Bearer " + cls.get_access_token()
         return request
 
-    def build_redirect_url(self, redirect_url: str, scopes: List[str], state: str) -> str:
+    @classmethod
+    def build_redirect_url(cls, redirect_url: str, scopes: List[str], state: str) -> str:
         parameters = {
             "response_type": "code",
-            "client_id": self.credentials.client_id,
+            "client_id": cls.credentials.client_id,
         }
 
         if redirect_url:
@@ -79,16 +100,17 @@ class OAuth2Authenticator(AuthenticatorInterface):
 
         if scopes:
             parameters["scope"] = ",".join(scopes)
-        elif self.scopes:
-            parameters["scope"] = ",".join(self.scopes)
+        elif cls.scopes:
+            parameters["scope"] = ",".join(cls.scopes)
 
         if state:
             parameters["state"] = state
 
-        return self.credentials.authorization_url + "?" + urllib.parse.urlencode(parameters)
+        return cls.credentials.authorization_url + "?" + urllib.parse.urlencode(parameters)
 
-    def fetch_access_token_by_code(self, code: str) -> AccessToken:
-        credentials = HttpBasic(self.credentials.client_id, self.credentials.client_secret)
+    @classmethod
+    def fetch_access_token_by_code(cls, code: str) -> AccessToken:
+        credentials = HttpBasic(cls.credentials.client_id, cls.credentials.client_secret)
 
         headers = {
             "Accept": "application/json",
@@ -99,12 +121,13 @@ class OAuth2Authenticator(AuthenticatorInterface):
             "code": code,
         }
 
-        response = self.new_http_client(credentials).post(self.credentials.token_url, headers=headers, data=data)
+        response = cls.new_http_client(credentials).post(cls.credentials.token_url, headers=headers, data=data)
 
-        return self.parse_token_response(response)
+        return cls.parse_token_response(response)
 
-    def fetch_access_token_by_client_credentials(self) -> AccessToken:
-        credentials = HttpBasic(self.credentials.client_id, self.credentials.client_secret)
+    @classmethod
+    def fetch_access_token_by_client_credentials(cls) -> AccessToken:
+        credentials = HttpBasic(cls.credentials.client_id, cls.credentials.client_secret)
 
         headers = {
             "Accept": "application/json",
@@ -114,15 +137,16 @@ class OAuth2Authenticator(AuthenticatorInterface):
             "grant_type": "client_credentials",
         }
 
-        if self.scopes:
-            data["scope"] = ",".join(self.scopes)
+        if cls.scopes:
+            data["scope"] = ",".join(cls.scopes)
 
-        response = self.new_http_client(credentials).post(self.credentials.token_url, headers=headers, data=data)
+        response = cls.new_http_client(credentials).post(cls.credentials.token_url, headers=headers, data=data)
 
-        return self.parse_token_response(response)
+        return cls.parse_token_response(response)
 
-    def fetch_access_token_by_refresh(self, refresh_token: str) -> AccessToken:
-        credentials = HttpBearer(self.get_access_token(False, 0))
+    @classmethod
+    def fetch_access_token_by_refresh(cls, refresh_token: str) -> AccessToken:
+        credentials = HttpBearer(cls.get_access_token(False, 0))
 
         headers = {
             "Accept": "application/json",
@@ -133,43 +157,46 @@ class OAuth2Authenticator(AuthenticatorInterface):
             "refresh_token": refresh_token,
         }
 
-        response = self.new_http_client(credentials).post(self.credentials.token_url, headers=headers, data=data)
+        response = cls.new_http_client(credentials).post(cls.credentials.token_url, headers=headers, data=data)
 
-        return self.parse_token_response(response)
+        return cls.parse_token_response(response)
 
-    def get_access_token(self, automatic_refresh: bool = True, expire_threshold: int = EXPIRE_THRESHOLD) -> str:
+    @classmethod
+    def get_access_token(cls, automatic_refresh: bool = True, expire_threshold: int = EXPIRE_THRESHOLD) -> str:
         timestamp = time.time()
 
-        access_token = self.credentials.token_store.get()
+        access_token = cls.credentials.token_store.get()
         if not access_token or access_token.get_expires_in_timestamp() < timestamp:
-            access_token = self.fetch_access_token_by_client_credentials()
+            access_token = cls.fetch_access_token_by_client_credentials()
 
         if access_token.get_expires_in_timestamp() > (timestamp + expire_threshold):
             return access_token.access_token
 
         if automatic_refresh and access_token.refresh_token:
-            access_token = self.fetch_access_token_by_refresh(access_token.refresh_token)
+            access_token = cls.fetch_access_token_by_refresh(access_token.refresh_token)
 
         return access_token.access_token
 
-    def parse_token_response(self, response: Response) -> AccessToken:
+    @classmethod
+    def parse_token_response(cls, response: Response) -> AccessToken:
         if response.status_code != 200:
             raise InvalidAccessTokenException(
                 "Could not obtain access token, received a non successful status code: " + str(response.status_code))
 
         token = AccessToken.from_json(response.content)
 
-        self.token_store.persist(token)
+        cls.token_store.persist(token)
 
         return token
 
-    def new_http_client(self, credentials: CredentialsInterface) -> Session:
+    @classmethod
+    def new_http_client(cls, credentials: CredentialsInterface) -> Session:
         return HttpClientFactory(AuthenticatorFactory.factory(credentials)).factory()
 
 
 class AuthenticatorFactory:
     @staticmethod
-    def factory(credentials: CredentialsInterface):
+    def factory(credentials: CredentialsInterface) -> AuthenticatorInterface:
         if isinstance(credentials, HttpBasic):
             return HttpBasicAuthenticator(credentials)
         elif isinstance(credentials, HttpBearer):
@@ -185,12 +212,16 @@ class AuthenticatorFactory:
 
 
 class HttpClientFactory:
-    def __init__(self, authenticator: AuthenticatorInterface):
-        self.authenticator = authenticator
+    authenticator: AuthenticatorInterface = None
 
-    def factory(self) -> Session:
+    @classmethod
+    def __init__(cls, authenticator: AuthenticatorInterface):
+        cls.authenticator = authenticator
+
+    @classmethod
+    def factory(cls) -> Session:
         session = requests.Session()
-        session.auth = self.authenticator
+        session.auth = cls.authenticator
         session.headers['User-Agent'] = 'SDKgen Client v1.0'
         session.headers['Accept'] = 'application/json'
         return session

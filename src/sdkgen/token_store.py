@@ -1,28 +1,39 @@
+from typing import Optional
+
 from .access_token import AccessToken
 
 
 class TokenStoreInterface:
-    def get(self) -> AccessToken:
+    @classmethod
+    def get(cls) -> AccessToken:
         pass
 
-    def persist(self, token: AccessToken):
+    @classmethod
+    def persist(cls, token: AccessToken):
         pass
 
-    def remove(self):
+    @classmethod
+    def remove(cls):
         pass
 
     pass
 
 
 class MemoryTokenStore(TokenStoreInterface):
-    def __init__(self):
-        self.token = None
+    token: Optional[AccessToken] = None
 
-    def get(self) -> AccessToken:
-        return self.token
+    @classmethod
+    def __init__(cls):
+        cls.token = None
 
-    def persist(self, token: AccessToken):
-        self.token = token
+    @classmethod
+    def get(cls) -> AccessToken:
+        return cls.token
 
-    def remove(self):
-        self.token = None
+    @classmethod
+    def persist(cls, token: AccessToken):
+        cls.token = token
+
+    @classmethod
+    def remove(cls):
+        cls.token = None

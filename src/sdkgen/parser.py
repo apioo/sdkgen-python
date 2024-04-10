@@ -3,13 +3,18 @@ import datetime
 
 
 class Parser:
-    def __init__(self, base_url: str):
-        self.base_url = self.normalize_url(base_url)
+    base_url: str = None
 
-    def url(self, path: str, parameters: dict[str, any]) -> str:
-        return self.base_url + "/" + self.substitute_parameters(path, parameters)
+    @classmethod
+    def __init__(cls, base_url: str):
+        cls.base_url = cls.normalize_url(base_url)
 
-    def substitute_parameters(self, path: str, parameters: dict[str, any]) -> str:
+    @classmethod
+    def url(cls, path: str, parameters: dict[str, any]) -> str:
+        return cls.base_url + "/" + cls.substitute_parameters(path, parameters)
+
+    @classmethod
+    def substitute_parameters(cls, path: str, parameters: dict[str, any]) -> str:
         parts = path.split("/")
         result = []
 
@@ -30,26 +35,28 @@ class Parser:
                 name = part[1:len(part) - 1]
 
             if name in parameters:
-                part = self.to_string(parameters[name])
+                part = cls.to_string(parameters[name])
 
             result.append(part)
 
         return "/".join(result)
 
-    def query(self, parameters: dict[str, any], struct_names: list[str] = None) -> dict[str, any]:
+    @classmethod
+    def query(cls, parameters: dict[str, any], struct_names: list[str] = None) -> dict[str, any]:
         result: dict[str, any] = {}
         for name, value in parameters.items():
             if value is None:
                 continue
 
             if struct_names and name in struct_names:
-                result = result | self.query(value.to_dict())
+                result = result | cls.query(value.to_dict())
             else:
-                result[name] = self.to_string(value)
+                result[name] = cls.to_string(value)
 
         return result
 
-    def to_string(self, value: any) -> string:
+    @classmethod
+    def to_string(cls, value: any) -> string:
         t = type(value)
         if t is int:
             return str(value)
@@ -68,7 +75,8 @@ class Parser:
         else:
             return ""
 
-    def normalize_url(self, value: string) -> string:
+    @classmethod
+    def normalize_url(cls, value: string) -> string:
         if value.endswith("/"):
             value = value[0:len(value) - 1]
         return value
