@@ -29,7 +29,8 @@ class TestParser(unittest.TestCase):
     def test_query(self):
         parser = Parser("https://api.acme.com/")
 
-        test = TestObject(None, "foo")
+        test = TestObject()
+        test.name = "foo"
 
         parameters = {
             "null": None,
