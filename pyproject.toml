@@ -1,6 +1,6 @@
 [project]
 name = "sdkgen-client"
-version = "0.2.1"
+version = "0.2.2"
 authors = [
   { name="Christoph Kappestein", email="christoph.kappestein@gmail.com" },
 ]
@@ -15,8 +15,8 @@ classifiers = [
     "Topic :: Software Development :: Code Generators",
 ]
 dependencies = [
-    "requests",
-    "pydantic",
+    "requests~=2.31.0",
+    "pydantic~=2.6.4",
 ]
 
 [project.urls]
