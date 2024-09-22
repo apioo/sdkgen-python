@@ -4,12 +4,22 @@ https://sdkgen.app
 """
 
 import requests
+import sdkgen
 from requests import RequestException
 from typing import List
+from typing import Dict
+from typing import Any
+from urllib.parse import parse_qs
 
-from src import sdkgen
+from .binary_exception import BinaryException
+from .form_exception import FormException
+from .json_exception import JsonException
+from .multipart_exception import MultipartException
 from .test_request import TestRequest
 from .test_response import TestResponse
+from .test_response_exception import TestResponseException
+from .text_exception import TextException
+from .xml_exception import XmlException
 
 class ProductTag(sdkgen.TagAbstract):
     def __init__(self, http_client: requests.Session, parser: sdkgen.Parser):
@@ -24,25 +34,31 @@ class ProductTag(sdkgen.TagAbstract):
             path_params = {}
 
             query_params = {}
-            query_params["startIndex"] = start_index
-            query_params["count"] = count
-            query_params["search"] = search
+            query_params['startIndex'] = start_index
+            query_params['count'] = count
+            query_params['search'] = search
 
             query_struct_names = []
 
-            url = self.parser.url("/anything", path_params)
+            url = self.parser.url('/anything', path_params)
 
-            headers = {}
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
 
-            response = self.http_client.get(url, headers=headers, params=self.parser.query(query_params, query_struct_names))
+
+
+            response = self.http_client.request('GET', url, **options)
 
             if response.status_code >= 200 and response.status_code < 300:
-                return TestResponse.model_validate_json(json_data=response.content)
+                data = TestResponse.model_validate_json(json_data=response.content)
 
+                return data
 
-            raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
+            statusCode = response.status_code
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
         except RequestException as e:
-            raise sdkgen.ClientException("An unknown error occurred: " + str(e))
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
 
     def create(self, payload: TestRequest) -> TestResponse:
         """
@@ -55,20 +71,32 @@ class ProductTag(sdkgen.TagAbstract):
 
             query_struct_names = []
 
-            url = self.parser.url("/anything", path_params)
+            url = self.parser.url('/anything', path_params)
 
-            headers = {}
-            headers["Content-Type"] = "application/json"
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
 
-            response = self.http_client.post(url, headers=headers, params=self.parser.query(query_params, query_struct_names), json=payload.model_dump(by_alias=True))
+            options['json'] = payload.model_dump(by_alias=True)
+
+            options['headers']['Content-Type'] = 'application/json'
+
+            response = self.http_client.request('POST', url, **options)
 
             if response.status_code >= 200 and response.status_code < 300:
-                return TestResponse.model_validate_json(json_data=response.content)
+                data = TestResponse.model_validate_json(json_data=response.content)
 
+                return data
 
-            raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
+            statusCode = response.status_code
+            if statusCode == 500:
+                data = TestResponse.model_validate_json(json_data=response.content)
+
+                raise TestResponseException(data)
+
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
         except RequestException as e:
-            raise sdkgen.ClientException("An unknown error occurred: " + str(e))
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
 
     def update(self, id: int, payload: TestRequest) -> TestResponse:
         """
@@ -76,26 +104,33 @@ class ProductTag(sdkgen.TagAbstract):
         """
         try:
             path_params = {}
-            path_params["id"] = id
+            path_params['id'] = id
 
             query_params = {}
 
             query_struct_names = []
 
-            url = self.parser.url("/anything/:id", path_params)
+            url = self.parser.url('/anything/:id', path_params)
 
-            headers = {}
-            headers["Content-Type"] = "application/json"
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
 
-            response = self.http_client.put(url, headers=headers, params=self.parser.query(query_params, query_struct_names), json=payload.model_dump(by_alias=True))
+            options['json'] = payload.model_dump(by_alias=True)
+
+            options['headers']['Content-Type'] = 'application/json'
+
+            response = self.http_client.request('PUT', url, **options)
 
             if response.status_code >= 200 and response.status_code < 300:
-                return TestResponse.model_validate_json(json_data=response.content)
+                data = TestResponse.model_validate_json(json_data=response.content)
 
+                return data
 
-            raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
+            statusCode = response.status_code
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
         except RequestException as e:
-            raise sdkgen.ClientException("An unknown error occurred: " + str(e))
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
 
     def patch(self, id: int, payload: TestRequest) -> TestResponse:
         """
@@ -103,26 +138,33 @@ class ProductTag(sdkgen.TagAbstract):
         """
         try:
             path_params = {}
-            path_params["id"] = id
+            path_params['id'] = id
 
             query_params = {}
 
             query_struct_names = []
 
-            url = self.parser.url("/anything/:id", path_params)
+            url = self.parser.url('/anything/:id', path_params)
 
-            headers = {}
-            headers["Content-Type"] = "application/json"
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
 
-            response = self.http_client.patch(url, headers=headers, params=self.parser.query(query_params, query_struct_names), json=payload.model_dump(by_alias=True))
+            options['json'] = payload.model_dump(by_alias=True)
+
+            options['headers']['Content-Type'] = 'application/json'
+
+            response = self.http_client.request('PATCH', url, **options)
 
             if response.status_code >= 200 and response.status_code < 300:
-                return TestResponse.model_validate_json(json_data=response.content)
+                data = TestResponse.model_validate_json(json_data=response.content)
 
+                return data
 
-            raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
+            statusCode = response.status_code
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
         except RequestException as e:
-            raise sdkgen.ClientException("An unknown error occurred: " + str(e))
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
 
     def delete(self, id: int) -> TestResponse:
         """
@@ -130,24 +172,259 @@ class ProductTag(sdkgen.TagAbstract):
         """
         try:
             path_params = {}
-            path_params["id"] = id
+            path_params['id'] = id
 
             query_params = {}
 
             query_struct_names = []
 
-            url = self.parser.url("/anything/:id", path_params)
+            url = self.parser.url('/anything/:id', path_params)
 
-            headers = {}
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
 
-            response = self.http_client.delete(url, headers=headers, params=self.parser.query(query_params, query_struct_names))
+
+
+            response = self.http_client.request('DELETE', url, **options)
 
             if response.status_code >= 200 and response.status_code < 300:
-                return TestResponse.model_validate_json(json_data=response.content)
+                data = TestResponse.model_validate_json(json_data=response.content)
 
+                return data
 
-            raise sdkgen.UnknownStatusCodeException("The server returned an unknown status code")
+            statusCode = response.status_code
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
         except RequestException as e:
-            raise sdkgen.ClientException("An unknown error occurred: " + str(e))
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
+
+    def binary(self, payload: bytearray) -> TestResponse:
+        """
+        Test binary content type
+        """
+        try:
+            path_params = {}
+
+            query_params = {}
+
+            query_struct_names = []
+
+            url = self.parser.url('/anything/binary', path_params)
+
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
+
+            options['data'] = payload
+
+            options['headers']['Content-Type'] = 'application/octet-stream'
+
+            response = self.http_client.request('POST', url, **options)
+
+            if response.status_code >= 200 and response.status_code < 300:
+                data = TestResponse.model_validate_json(json_data=response.content)
+
+                return data
+
+            statusCode = response.status_code
+            if statusCode == 500:
+                data = response.content
+
+                raise BinaryException(data)
+
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
+        except RequestException as e:
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
+
+    def form(self, payload: Dict[str, str]) -> TestResponse:
+        """
+        Test form content type
+        """
+        try:
+            path_params = {}
+
+            query_params = {}
+
+            query_struct_names = []
+
+            url = self.parser.url('/anything/form', path_params)
+
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
+
+            options['data'] = payload
+
+            options['headers']['Content-Type'] = 'application/x-www-form-urlencoded'
+
+            response = self.http_client.request('POST', url, **options)
+
+            if response.status_code >= 200 and response.status_code < 300:
+                data = TestResponse.model_validate_json(json_data=response.content)
+
+                return data
+
+            statusCode = response.status_code
+            if statusCode == 500:
+                data = parse_qs(response.text)
+
+                raise FormException(data)
+
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
+        except RequestException as e:
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
+
+    def json(self, payload: Any) -> TestResponse:
+        """
+        Test json content type
+        """
+        try:
+            path_params = {}
+
+            query_params = {}
+
+            query_struct_names = []
+
+            url = self.parser.url('/anything/json', path_params)
+
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
+
+            options['json'] = payload
+
+            options['headers']['Content-Type'] = 'application/json'
+
+            response = self.http_client.request('POST', url, **options)
+
+            if response.status_code >= 200 and response.status_code < 300:
+                data = TestResponse.model_validate_json(json_data=response.content)
+
+                return data
+
+            statusCode = response.status_code
+            if statusCode == 500:
+                data = response.json()
+
+                raise JsonException(data)
+
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
+        except RequestException as e:
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
+
+    def multipart(self, payload: Dict[str, Any]) -> TestResponse:
+        """
+        Test json content type
+        """
+        try:
+            path_params = {}
+
+            query_params = {}
+
+            query_struct_names = []
+
+            url = self.parser.url('/anything/multipart', path_params)
+
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
+
+            options['files'] = payload
+
+
+            response = self.http_client.request('POST', url, **options)
+
+            if response.status_code >= 200 and response.status_code < 300:
+                data = TestResponse.model_validate_json(json_data=response.content)
+
+                return data
+
+            statusCode = response.status_code
+            if statusCode == 500:
+                # @TODO currently not possible, please create an issue at https://github.com/apioo/typeapi if needed
+                data = {}
+
+                raise MultipartException(data)
+
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
+        except RequestException as e:
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
+
+    def text(self, payload: str) -> TestResponse:
+        """
+        Test text content type
+        """
+        try:
+            path_params = {}
+
+            query_params = {}
+
+            query_struct_names = []
+
+            url = self.parser.url('/anything/text', path_params)
+
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
+
+            options['data'] = payload
+
+            options['headers']['Content-Type'] = 'text/plain'
+
+            response = self.http_client.request('POST', url, **options)
+
+            if response.status_code >= 200 and response.status_code < 300:
+                data = TestResponse.model_validate_json(json_data=response.content)
+
+                return data
+
+            statusCode = response.status_code
+            if statusCode == 500:
+                data = response.text
+
+                raise TextException(data)
+
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
+        except RequestException as e:
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
+
+    def xml(self, payload: str) -> TestResponse:
+        """
+        Test xml content type
+        """
+        try:
+            path_params = {}
+
+            query_params = {}
+
+            query_struct_names = []
+
+            url = self.parser.url('/anything/xml', path_params)
+
+            options = {}
+            options['headers'] = {}
+            options['params'] = self.parser.query(query_params, query_struct_names)
+
+            options['data'] = payload
+
+            options['headers']['Content-Type'] = 'application/xml'
+
+            response = self.http_client.request('POST', url, **options)
+
+            if response.status_code >= 200 and response.status_code < 300:
+                data = TestResponse.model_validate_json(json_data=response.content)
+
+                return data
+
+            statusCode = response.status_code
+            if statusCode == 500:
+                data = response.text
+
+                raise XmlException(data)
+
+            raise sdkgen.UnknownStatusCodeException('The server returned an unknown status code: ' + str(statusCode))
+        except RequestException as e:
+            raise sdkgen.ClientException('An unknown error occurred: ' + str(e))
+
 
 

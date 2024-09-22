@@ -4,10 +4,13 @@ https://sdkgen.app
 """
 
 import requests
+import sdkgen
 from requests import RequestException
 from typing import List
+from typing import Dict
+from typing import Any
+from urllib.parse import parse_qs
 
-from src import sdkgen
 from .product_tag import ProductTag
 
 class Client(sdkgen.ClientAbstract):
@@ -26,3 +29,7 @@ class Client(sdkgen.ClientAbstract):
     def build(token: str):
         return Client("http://127.0.0.1:8081", sdkgen.HttpBearer(token))
 
+
+    @staticmethod
+    def buildAnonymous():
+        return Client("http://127.0.0.1:8081", sdkgen.Anonymous())

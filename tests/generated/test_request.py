@@ -6,6 +6,7 @@ https://sdkgen.app
 from pydantic import BaseModel, Field, GetCoreSchemaHandler
 from pydantic_core import CoreSchema, core_schema
 from typing import Any, Dict, Generic, List, Optional, TypeVar, Union
+import datetime
 from .test_object import TestObject
 from .test_map_scalar import TestMapScalar
 from .test_map_object import TestMapObject
@@ -14,6 +15,9 @@ class TestRequest(BaseModel):
     float_: Optional[float] = Field(default=None, alias="float")
     string: Optional[str] = Field(default=None, alias="string")
     bool_: Optional[bool] = Field(default=None, alias="bool")
+    date_string: Optional[datetime.date] = Field(default=None, alias="dateString")
+    date_time_string: Optional[datetime.datetime] = Field(default=None, alias="dateTimeString")
+    time_string: Optional[datetime.time] = Field(default=None, alias="timeString")
     array_scalar: Optional[List[str]] = Field(default=None, alias="arrayScalar")
     array_object: Optional[List[TestObject]] = Field(default=None, alias="arrayObject")
     map_scalar: Optional[TestMapScalar] = Field(default=None, alias="mapScalar")

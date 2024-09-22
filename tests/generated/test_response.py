@@ -10,6 +10,9 @@ from .test_map_scalar import TestMapScalar
 from .test_request import TestRequest
 class TestResponse(BaseModel):
     args: Optional[TestMapScalar] = Field(default=None, alias="args")
+    data: Optional[str] = Field(default=None, alias="data")
+    files: Optional[TestMapScalar] = Field(default=None, alias="files")
+    form: Optional[TestMapScalar] = Field(default=None, alias="form")
     headers: Optional[TestMapScalar] = Field(default=None, alias="headers")
     json: Optional[TestRequest] = Field(default=None, alias="json")
     method: Optional[str] = Field(default=None, alias="method")
