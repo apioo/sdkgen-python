@@ -6,7 +6,7 @@ from .parser import Parser
 
 
 class ClientAbstract:
-    USER_AGENT = "SDKgen Client v1.0"
+    USER_AGENT = "SDKgen Client v2.0"
 
     authenticator: AuthenticatorInterface = None
     http_client: Session = None
