@@ -4,7 +4,7 @@ https://sdkgen.app
 """
 
 import requests
-import sdkgen
+from src import sdkgen
 from requests import RequestException
 from typing import List
 from typing import Dict
