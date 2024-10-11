@@ -12,7 +12,7 @@ class TestIntegration(unittest.TestCase):
 
         self.assertEqual(response.headers['Authorization'], 'Bearer my_token')
         self.assertEqual(response.headers['Accept'], 'application/json')
-        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v1.0')
+        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v2.0')
         self.assertEqual(response.method, 'GET')
         self.assertEqual(response.args['startIndex'], '8')
         self.assertEqual(response.args['count'], '16')
@@ -27,7 +27,7 @@ class TestIntegration(unittest.TestCase):
 
         self.assertEqual(response.headers['Authorization'], 'Bearer my_token')
         self.assertEqual(response.headers['Accept'], 'application/json')
-        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v1.0')
+        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v2.0')
         self.assertEqual(response.method, 'POST')
         self.assertEqual(response.json.model_dump_json(by_alias=True), '{"int":1337,"float":13.37,"string":"foobar","bool":true,"dateString":"2024-09-22","dateTimeString":"2024-09-22T10:09:00","timeString":"10:09:00","arrayScalar":["foo","bar"],"arrayObject":[{"id":1,"name":"foo"},{"id":1,"name":"bar"}],"mapScalar":{"bar":"foo","foo":"bar"},"mapObject":{"bar":{"id":1,"name":"bar"},"foo":{"id":1,"name":"foo"}},"object":{"id":1,"name":"foo"}}')
 
@@ -39,7 +39,7 @@ class TestIntegration(unittest.TestCase):
 
         self.assertEqual(response.headers['Authorization'], 'Bearer my_token')
         self.assertEqual(response.headers['Accept'], 'application/json')
-        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v1.0')
+        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v2.0')
         self.assertEqual(response.method, 'PUT')
         self.assertEqual(response.json.model_dump_json(by_alias=True), '{"int":1337,"float":13.37,"string":"foobar","bool":true,"dateString":"2024-09-22","dateTimeString":"2024-09-22T10:09:00","timeString":"10:09:00","arrayScalar":["foo","bar"],"arrayObject":[{"id":1,"name":"foo"},{"id":1,"name":"bar"}],"mapScalar":{"bar":"foo","foo":"bar"},"mapObject":{"bar":{"id":1,"name":"bar"},"foo":{"id":1,"name":"foo"}},"object":{"id":1,"name":"foo"}}')
 
@@ -51,7 +51,7 @@ class TestIntegration(unittest.TestCase):
 
         self.assertEqual(response.headers['Authorization'], 'Bearer my_token')
         self.assertEqual(response.headers['Accept'], 'application/json')
-        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v1.0')
+        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v2.0')
         self.assertEqual(response.method, 'PATCH')
         self.assertEqual(response.json.model_dump_json(by_alias=True), '{"int":1337,"float":13.37,"string":"foobar","bool":true,"dateString":"2024-09-22","dateTimeString":"2024-09-22T10:09:00","timeString":"10:09:00","arrayScalar":["foo","bar"],"arrayObject":[{"id":1,"name":"foo"},{"id":1,"name":"bar"}],"mapScalar":{"bar":"foo","foo":"bar"},"mapObject":{"bar":{"id":1,"name":"bar"},"foo":{"id":1,"name":"foo"}},"object":{"id":1,"name":"foo"}}')
 
@@ -62,7 +62,7 @@ class TestIntegration(unittest.TestCase):
 
         self.assertEqual(response.headers['Authorization'], 'Bearer my_token')
         self.assertEqual(response.headers['Accept'], 'application/json')
-        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v1.0')
+        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v2.0')
         self.assertEqual(response.method, 'DELETE')
         self.assertEqual(response.json, None)
 
@@ -75,7 +75,7 @@ class TestIntegration(unittest.TestCase):
 
         self.assertEqual(response.headers['Authorization'], 'Bearer my_token')
         self.assertEqual(response.headers['Accept'], 'application/json')
-        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v1.0')
+        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v2.0')
         self.assertEqual(response.method, 'POST')
         self.assertEqual(response.data, 'foobar')
 
@@ -88,7 +88,7 @@ class TestIntegration(unittest.TestCase):
 
         self.assertEqual(response.headers['Authorization'], 'Bearer my_token')
         self.assertEqual(response.headers['Accept'], 'application/json')
-        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v1.0')
+        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v2.0')
         self.assertEqual(response.method, 'POST')
         self.assertEqual(response.form['foo'], 'bar')
 
@@ -101,7 +101,7 @@ class TestIntegration(unittest.TestCase):
 
         self.assertEqual(response.headers['Authorization'], 'Bearer my_token')
         self.assertEqual(response.headers['Accept'], 'application/json')
-        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v1.0')
+        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v2.0')
         self.assertEqual(response.method, 'POST')
         self.assertEqual(response.json.string, 'bar')
 
@@ -114,7 +114,7 @@ class TestIntegration(unittest.TestCase):
 
         self.assertEqual(response.headers['Authorization'], 'Bearer my_token')
         self.assertEqual(response.headers['Accept'], 'application/json')
-        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v1.0')
+        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v2.0')
         self.assertEqual(response.method, 'POST')
         self.assertEqual(response.files['foo'], 'foobar')
 
@@ -125,7 +125,7 @@ class TestIntegration(unittest.TestCase):
 
         self.assertEqual(response.headers['Authorization'], 'Bearer my_token')
         self.assertEqual(response.headers['Accept'], 'application/json')
-        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v1.0')
+        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v2.0')
         self.assertEqual(response.method, 'POST')
         self.assertEqual(response.data, 'foobar')
 
@@ -136,7 +136,7 @@ class TestIntegration(unittest.TestCase):
 
         self.assertEqual(response.headers['Authorization'], 'Bearer my_token')
         self.assertEqual(response.headers['Accept'], 'application/json')
-        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v1.0')
+        self.assertEqual(response.headers['User-Agent'], 'SDKgen Client v2.0')
         self.assertEqual(response.method, 'POST')
         self.assertEqual(response.data, '<foo>bar</foo>')
 
