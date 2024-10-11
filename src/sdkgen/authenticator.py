@@ -203,6 +203,6 @@ class HttpClientFactory:
     def factory(self) -> Session:
         session = requests.Session()
         session.auth = self.authenticator
-        session.headers['User-Agent'] = 'SDKgen Client v1.0'
+        session.headers['User-Agent'] = 'SDKgen Client v2.0'
         session.headers['Accept'] = 'application/json'
         return session
