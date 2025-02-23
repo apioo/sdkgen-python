@@ -196,13 +196,18 @@ class AuthenticatorFactory:
 
 class HttpClientFactory:
     authenticator: AuthenticatorInterface = None
+    version: str = None
 
-    def __init__(self, authenticator: AuthenticatorInterface):
+    def __init__(self, authenticator: AuthenticatorInterface, version: str = None):
         self.authenticator = authenticator
+        self.version = version
 
     def factory(self) -> Session:
         session = requests.Session()
         session.auth = self.authenticator
-        session.headers['User-Agent'] = 'SDKgen Client v2.0'
+        if self.version:
+            session.headers['User-Agent'] = 'SDKgen/' + self.version
+        else:
+            session.headers['User-Agent'] = 'SDKgen'
         session.headers['Accept'] = 'application/json'
         return session

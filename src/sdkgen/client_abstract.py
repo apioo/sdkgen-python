@@ -12,9 +12,9 @@ class ClientAbstract:
     http_client: Session = None
     parser: Parser = None
 
-    def __init__(self, base_url: str, credentials: CredentialsInterface):
+    def __init__(self, base_url: str, credentials: CredentialsInterface, version: str = None):
         self.authenticator = AuthenticatorFactory.factory(credentials)
-        self.http_client = HttpClientFactory(self.authenticator).factory()
+        self.http_client = HttpClientFactory(self.authenticator, version).factory()
         self.parser = Parser(base_url)
 
 

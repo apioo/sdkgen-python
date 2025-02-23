@@ -14,8 +14,8 @@ from urllib.parse import parse_qs
 from .product_tag import ProductTag
 
 class Client(sdkgen.ClientAbstract):
-    def __init__(self, base_url: str, credentials: sdkgen.CredentialsInterface):
-        super().__init__(base_url, credentials)
+    def __init__(self, base_url: str, credentials: sdkgen.CredentialsInterface, version: str = None):
+        super().__init__(base_url, credentials, version)
 
     def product(self) -> ProductTag:
         return ProductTag(
@@ -27,7 +27,7 @@ class Client(sdkgen.ClientAbstract):
 
     @staticmethod
     def build(token: str):
-        return Client("http://127.0.0.1:8081", sdkgen.HttpBearer(token))
+        return Client("http://127.0.0.1:8081", sdkgen.HttpBearer(token), "0.1.0")
 
 
     @staticmethod
